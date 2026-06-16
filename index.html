@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Workflow — Để AI Làm Việc Thay Bạn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12172B;
+    --ink-soft:#1C2342;
+    --paper:#FAF7F1;
+    --paper-2:#F1EAD9;
+    --text:#1B1F2A;
+    --text-soft:#5B6172;
+    --text-on-ink:#E9E7F0;
+    --text-on-ink-soft:#A6ABC4;
+    --amber:#F2A93B;
+    --amber-dark:#D88F1F;
+    --teal:#3FD0C9;
+    --line-on-ink:rgba(255,255,255,.12);
+    --line-on-paper:rgba(18,23,43,.10);
+    --font-display:'Montserrat',sans-serif;
+    --font-body:'Be Vietnam Pro',sans-serif;
+    --radius:12px;
+    --maxw:1120px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;font-family:var(--font-body);color:var(--text);background:var(--paper);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  img,svg{display:block;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  section{padding:88px 0;}
+  @media (max-width:680px){ section{padding:64px 0;} }
+
+  .eyebrow{font-family:var(--font-body);font-weight:700;font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin:0 0 14px;}
+  .on-ink .eyebrow{color:var(--teal);}
+  .on-paper .eyebrow{color:var(--amber-dark);}
+
+  h1,h2,h3{font-family:var(--font-display);margin:0;letter-spacing:-0.01em;}
+  h2{font-size:clamp(1.7rem,3.4vw,2.5rem);font-weight:800;line-height:1.15;}
+  h3{font-size:1.15rem;font-weight:700;}
+  p{margin:0;}
+  .section-head{max-width:640px;margin-bottom:48px;}
+  .section-head p{margin-top:14px;color:var(--text-soft);font-size:1.02rem;}
+  .on-ink .section-head p{color:var(--text-on-ink-soft);}
+
+  /* ===== TOP NAV ===== */
+  .topnav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(18,23,43,.82);backdrop-filter:blur(8px);border-bottom:1px solid var(--line-on-ink);}
+  .topnav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px;}
+  .brand{font-family:var(--font-display);font-weight:800;color:#fff;font-size:1.05rem;letter-spacing:-0.01em;}
+  .brand span{color:var(--teal);}
+  .btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-body);font-weight:700;font-size:.92rem;padding:12px 22px;border-radius:10px;border:none;cursor:pointer;text-decoration:none;transition:transform .15s ease, box-shadow .15s ease;}
+  .btn:focus-visible{outline:3px solid var(--teal);outline-offset:2px;}
+  .btn-primary{background:var(--amber);color:var(--ink);}
+  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 24px -8px rgba(242,169,59,.55);}
+  .btn-primary .arrow{transition:transform .15s ease;}
+  .btn-primary:hover .arrow{transform:translateX(3px);}
+  .btn-ghost-onink{background:transparent;color:#fff;border:1px solid var(--line-on-ink);}
+  .btn-ghost-onink:hover{background:rgba(255,255,255,.06);}
+  .btn-sm{padding:9px 16px;font-size:.85rem;}
+
+  /* ===== HERO ===== */
+  .hero{position:relative;background:var(--ink);color:var(--text-on-ink);padding:160px 0 110px;overflow:hidden;}
+  .hero-flow{position:absolute;inset:0;opacity:.5;pointer-events:none;}
+  .hero .wrap{position:relative;z-index:2;}
+  .hero-inner{max-width:760px;}
+  .pill-row{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 36px;}
+  .pill{font-size:.82rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line-on-ink);color:var(--text-on-ink-soft);}
+  .hero h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:900;line-height:1.04;color:#fff;}
+  .hero h1 em{font-style:normal;color:var(--teal);}
+  .hero-sub{font-size:clamp(1.05rem,2vw,1.3rem);font-weight:600;color:var(--text-on-ink-soft);margin-top:18px;}
+  .hero-desc{margin-top:18px;font-size:1.02rem;color:var(--text-on-ink-soft);max-width:540px;}
+  .hero-cta-row{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px;align-items:center;}
+  .link-soft{font-weight:600;font-size:.95rem;color:var(--text-on-ink-soft);text-decoration:underline;text-decoration-color:var(--line-on-ink);}
+  .link-soft:hover{color:#fff;}
+
+  /* ===== PAIN POINTS ===== */
+  .pain-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  @media (max-width:680px){ .pain-grid{grid-template-columns:1fr;} }
+  .pain-card{background:#fff;border:1px solid var(--line-on-paper);border-radius:var(--radius);padding:26px;display:flex;gap:16px;align-items:flex-start;}
+  .icon-badge{flex:none;width:42px;height:42px;border-radius:10px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--amber-dark);}
+  .icon-badge svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+  .pain-card p{font-weight:600;font-size:1.02rem;}
+
+  /* ===== SOLUTION ===== */
+  .solution{background:var(--ink);color:var(--text-on-ink);}
+  .solution-lead{max-width:680px;}
+  .solution-lead p{color:var(--text-on-ink-soft);font-size:1.05rem;margin-top:16px;}
+  .usp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px;}
+  @media (max-width:860px){ .usp-grid{grid-template-columns:1fr;} }
+  .usp-card{background:var(--ink-soft);border:1px solid var(--line-on-ink);border-radius:var(--radius);padding:28px;}
+  .usp-card .icon-badge{background:rgba(63,208,201,.12);color:var(--teal);margin-bottom:18px;}
+  .usp-card h3{color:#fff;margin-bottom:10px;}
+  .usp-card p{color:var(--text-on-ink-soft);font-size:.96rem;}
+
+  /* ===== AUDIENCE ===== */
+  .persona-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  @media (max-width:980px){ .persona-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .persona-grid{grid-template-columns:1fr;} }
+  .persona-card{border:1px solid var(--line-on-paper);border-radius:var(--radius);padding:26px;background:#fff;transition:transform .15s ease, box-shadow .15s ease;}
+  .persona-card:hover{transform:translateY(-4px);box-shadow:0 16px 30px -16px rgba(18,23,43,.25);}
+  .persona-card .icon-badge{background:var(--paper-2);color:var(--ink);margin-bottom:16px;}
+  .persona-card h3{margin-bottom:8px;}
+  .persona-card p{color:var(--text-soft);font-size:.94rem;}
+
+  /* ===== CURRICULUM ===== */
+  .curriculum{background:var(--ink);color:var(--text-on-ink);}
+  .track{position:relative;margin-top:10px;}
+  .track::before{content:'';position:absolute;left:27px;top:8px;bottom:8px;width:2px;background:linear-gradient(to bottom, var(--teal), rgba(63,208,201,.08));}
+  .node{position:relative;display:grid;grid-template-columns:56px 1fr;gap:22px;padding:22px 0;opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .5s ease;}
+  .node.is-visible{opacity:1;transform:translateY(0);}
+  .node-num{width:56px;height:56px;border-radius:50%;background:var(--ink-soft);border:2px solid var(--teal);color:var(--teal);font-family:var(--font-display);font-weight:800;font-size:1.05rem;display:flex;align-items:center;justify-content:center;z-index:1;}
+  .node-body{background:var(--ink-soft);border:1px solid var(--line-on-ink);border-radius:var(--radius);padding:22px 26px;}
+  .node-body h3{color:#fff;font-size:1.2rem;}
+  .node-topics{margin:12px 0 0;color:var(--text-on-ink-soft);font-size:.92rem;}
+  .node-outcome{margin-top:14px;padding-top:14px;border-top:1px solid var(--line-on-ink);display:flex;gap:10px;font-size:.94rem;}
+  .node-outcome .tag{flex:none;font-weight:700;color:var(--teal);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;padding-top:2px;}
+  .node-outcome p{color:#fff;}
+  @media (max-width:600px){
+    .node{grid-template-columns:40px 1fr;gap:14px;}
+    .node-num{width:40px;height:40px;font-size:.85rem;}
+    .track::before{left:19px;}
+    .node-body{padding:18px;}
+  }
+
+  /* ===== INSTRUCTOR ===== */
+  .instructor-card{display:grid;grid-template-columns:140px 1fr;gap:32px;align-items:center;background:#fff;border:1px solid var(--line-on-paper);border-radius:var(--radius);padding:32px;}
+  @media (max-width:600px){ .instructor-card{grid-template-columns:1fr;text-align:center;} }
+  .avatar{width:140px;height:140px;border-radius:50%;background:var(--paper-2);display:flex;align-items:center;justify-content:center;color:var(--text-soft);font-family:var(--font-display);font-weight:800;font-size:2rem;margin:0 auto;}
+  .instructor-name{font-family:var(--font-display);font-weight:800;font-size:1.3rem;}
+  .instructor-role{color:var(--amber-dark);font-weight:700;font-size:.95rem;margin-top:4px;}
+  .instructor-bio{margin-top:14px;color:var(--text-soft);font-size:.98rem;}
+  .credo-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px;}
+  .credo{font-size:.82rem;font-weight:600;padding:6px 12px;border-radius:999px;background:var(--paper-2);color:var(--text);}
+
+  /* ===== PRICING ===== */
+  .pricing{background:var(--ink);color:var(--text-on-ink);}
+  .earlybird{max-width:760px;margin:0 auto 40px;text-align:center;background:rgba(242,169,59,.1);border:1px solid rgba(242,169,59,.35);border-radius:999px;padding:12px 22px;font-size:.92rem;font-weight:600;color:var(--amber);}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:880px;margin:0 auto;}
+  @media (max-width:760px){ .price-grid{grid-template-columns:1fr;} }
+  .price-card{background:var(--ink-soft);border:1px solid var(--line-on-ink);border-radius:16px;padding:34px;display:flex;flex-direction:column;}
+  .price-card.featured{border-color:var(--amber);position:relative;background:#1A1F3D;}
+  .badge{position:absolute;top:-13px;left:34px;background:var(--amber);color:var(--ink);font-size:.74rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:999px;}
+  .price-name{font-family:var(--font-display);font-weight:700;font-size:1.0rem;color:var(--text-on-ink-soft);}
+  .price-amount{font-family:var(--font-display);font-weight:900;font-size:2.3rem;color:#fff;margin-top:10px;}
+  .price-amount span{font-size:1rem;font-weight:600;color:var(--text-on-ink-soft);}
+  .price-strike{color:var(--text-on-ink-soft);text-decoration:line-through;font-size:.92rem;margin-top:4px;}
+  .price-list{list-style:none;margin:22px 0 26px;padding:0;display:flex;flex-direction:column;gap:11px;}
+  .price-list li{display:flex;gap:10px;font-size:.94rem;color:var(--text-on-ink-soft);}
+  .price-list li svg{flex:none;width:18px;height:18px;stroke:var(--teal);fill:none;stroke-width:2;margin-top:2px;}
+  .price-card .btn{margin-top:auto;justify-content:center;}
+
+  /* ===== FAQ ===== */
+  .faq-list{max-width:780px;border-top:1px solid var(--line-on-paper);}
+  details{border-bottom:1px solid var(--line-on-paper);padding:20px 0;}
+  summary{cursor:pointer;font-weight:700;font-size:1.02rem;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:16px;}
+  summary::-webkit-details-marker{display:none;}
+  summary .plus{flex:none;font-family:var(--font-display);font-size:1.3rem;color:var(--amber-dark);transition:transform .2s ease;}
+  details[open] summary .plus{transform:rotate(45deg);}
+  details p{margin-top:12px;color:var(--text-soft);font-size:.96rem;max-width:640px;}
+
+  /* ===== FINAL CTA ===== */
+  .final-cta{background:var(--ink);color:#fff;text-align:center;}
+  .final-cta h2{font-size:clamp(1.9rem,4.4vw,2.8rem);max-width:680px;margin:0 auto;}
+  .final-cta p{color:var(--text-on-ink-soft);margin-top:16px;font-size:1.05rem;}
+  .final-cta .btn{margin-top:30px;font-size:1.02rem;padding:16px 30px;}
+
+  /* ===== REGISTER FORM ===== */
+  .form-card{max-width:560px;margin:0 auto;background:#fff;color:var(--text);border-radius:16px;padding:32px;text-align:left;}
+  .form-row{margin-bottom:16px;}
+  .form-row label{display:block;font-size:.85rem;font-weight:700;margin-bottom:6px;color:var(--text-soft);}
+  .form-row input,.form-row select{width:100%;padding:12px 14px;border:1px solid var(--line-on-paper);border-radius:8px;font-family:var(--font-body);font-size:.96rem;background:var(--paper);}
+  .form-row input:focus,.form-row select:focus{outline:2px solid var(--teal);outline-offset:1px;}
+  .form-note{font-size:.78rem;color:var(--text-soft);margin-top:10px;}
+
+  /* ===== FOOTER ===== */
+  footer{background:#0C0F1E;color:var(--text-on-ink-soft);padding:40px 0;font-size:.88rem;}
+  footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important;}
+    .node{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<!-- =================== GHI CHÚ CHO PHÚC (xóa khi đưa lên web thật) ===================
+File này là 1 trang HTML hoàn chỉnh, tự đứng (style nằm trong <style>, không cần file ngoài).
+Cách đưa vào WordPress, chọn 1 trong 3 cách:
+ 1) Đơn giản nhất: tạo Page mới > Custom HTML block (Gutenberg) > dán toàn bộ phần trong <body> vào.
+    Phần CSS trong <style> dán vào Appearance > Customize > Additional CSS (hoặc 1 block "Custom HTML" riêng đặt đầu trang).
+ 2) Dùng Elementor/Divi: vẫn dùng Custom HTML widget, dán cả file vào 1 widget HTML duy nhất là chạy được luôn.
+ 3) Nếu có theme cho phép page template riêng: nhờ dev tạo 1 page-template.php và dán nguyên file này vào.
+
+Các chỗ CẦN SỬA trước khi đăng (đánh dấu bằng comment "SỬA:"):
+- Link nút "Đăng ký" (hiện đang là # hoặc alert demo)
+- Form đăng ký cuối trang chỉ là bản mẫu — cần nối với plugin form thật (Contact Form 7 / WPForms / Fluent Forms) hoặc link thanh toán
+- Thông tin giảng viên (tên, ảnh, mô tả)
+- Ngày khai giảng, số lượng early bird còn lại
+============================================================================= -->
+
+<nav class="topnav">
+  <div class="wrap">
+    <div class="brand">AI <span>WORKFLOW</span></div>
+    <a href="#dang-ky" class="btn btn-primary btn-sm">Đăng ký <span class="arrow">→</span></a>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<header class="hero on-ink">
+  <svg class="hero-flow" width="100%" height="100%" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M-50 560 C 150 480, 250 620, 420 520 S 650 380, 820 460 S 1100 380, 1260 300" fill="none" stroke="#3FD0C9" stroke-width="1.4" stroke-opacity="0.35"/>
+    <path d="M-50 200 C 200 260, 300 120, 520 180 S 760 280, 950 160 S 1150 220, 1300 140" fill="none" stroke="#F2A93B" stroke-width="1.2" stroke-opacity="0.22"/>
+    <circle cx="420" cy="520" r="5" fill="#3FD0C9" opacity="0.7"/>
+    <circle cx="820" cy="460" r="4" fill="#3FD0C9" opacity="0.5"/>
+    <circle cx="520" cy="180" r="4" fill="#F2A93B" opacity="0.5"/>
+    <circle cx="950" cy="160" r="5" fill="#F2A93B" opacity="0.6"/>
+  </svg>
+  <div class="wrap">
+    <div class="hero-inner">
+      <div class="eyebrow">Khóa học thực chiến · 8 buổi · 90 phút/buổi</div>
+      <h1>Để AI <em>làm việc</em> thay bạn</h1>
+      <p class="hero-sub">Bạn dành thời gian đó cho những việc quan trọng hơn.</p>
+      <p class="hero-desc">8 buổi học trực tiếp, đi từ con số 0 đến tự tay dựng được hệ thống tự động hóa chạy thật — không cần biết một dòng code nào.</p>
+      <div class="pill-row">
+        <span class="pill">Sales</span>
+        <span class="pill">Marketing</span>
+        <span class="pill">HR</span>
+        <span class="pill">Freelancer / Tự kinh doanh</span>
+      </div>
+      <div class="hero-cta-row">
+        <a href="#dang-ky" class="btn btn-primary">Đăng ký giữ chỗ <span class="arrow">→</span></a>
+        <a href="#lo-trinh" class="link-soft">Xem lộ trình 8 buổi</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ===== PAIN POINTS ===== -->
+<section class="on-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Nếu bạn đang...</div>
+      <h2>Quen thuộc đến mức&nbsp;đau</h2>
+    </div>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <p>Mất nguyên buổi tối để làm một cái báo cáo mà sếp chỉ xem 5 phút</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
+        <p>Soạn từng email chăm sóc khách hàng bằng tay, gửi trễ vì quá tải</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></div>
+        <p>Nhìn đồng nghiệp ra content, ra video trong vài phút còn mình vẫn làm thủ công</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V7z"/><path d="M12 16v5"/></svg></div>
+        <p>Nghe "automation", "Make.com", "API" mà nghĩ đó là chuyện của dân IT</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SOLUTION / USP ===== -->
+<section class="solution on-ink">
+  <div class="wrap">
+    <div class="solution-lead">
+      <div class="eyebrow">Đây không phải khóa lý thuyết suông</div>
+      <h2>Học từ người đã làm thật, không phải người chỉ biết giảng</h2>
+      <p>Toàn bộ nội dung được đúc kết từ kinh nghiệm thực chiến nhiều năm làm marketing &amp; vận hành tại doanh nghiệp — mỗi công cụ, mỗi kỹ thuật trong khóa học đều đã được dùng để ra kết quả thật, không phải demo cho vui.</p>
+    </div>
+    <div class="usp-grid">
+      <div class="usp-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 12l3 3 5-6"/></svg></div>
+        <h3>Cầm về sản phẩm thật mỗi buổi</h3>
+        <p>Không học chay. Mỗi buổi kết thúc bằng một file, template, hoặc workflow dùng được ngay cho công việc của bạn.</p>
+      </div>
+      <div class="usp-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-3-6.7"/><path d="M21 3v5h-5"/></svg></div>
+        <h3>Automation thực chiến</h3>
+        <p>3 buổi cuối dạy Make.com thật — phần rất ít khóa AI dành cho người mới dám đụng tới.</p>
+      </div>
+      <div class="usp-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M5 3l5 14 2-5 5-2z"/><path d="M13 13l5 5"/></svg></div>
+        <h3>Không cần biết kỹ thuật</h3>
+        <p>Toàn bộ thao tác bằng cú nhấp chuột và câu lệnh ngôn ngữ tự nhiên — không một dòng code.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== AUDIENCE ===== -->
+<section class="on-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Dành cho ai</div>
+      <h2>Bất kể bạn đang làm vai trò nào</h2>
+    </div>
+    <div class="persona-grid">
+      <div class="persona-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+        <h3>Sales</h3>
+        <p>Tự tạo deck pitch khách hàng, research đối thủ trong 5 phút, dựng hệ thống chăm sóc khách hàng tự động không sót lead.</p>
+      </div>
+      <div class="persona-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><path d="M3 10v4h3l5 4V6l-5 4H3z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg></div>
+        <h3>Marketing</h3>
+        <p>Ra content, slide, hình ảnh, video, nhạc chuyên nghiệp chỉ bằng vài câu lệnh, tự động hóa theo dõi đối thủ hàng tuần.</p>
+      </div>
+      <div class="persona-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a5 5 0 0 1 5-5h2a5 5 0 0 1 5 5v1"/><circle cx="17" cy="9" r="2.3"/><path d="M16 14.5c2.4 0 4.7 1.4 4.7 4.2v.8"/></svg></div>
+        <h3>HR</h3>
+        <p>Viết JD, soạn slide đào tạo, tự động hóa email follow-up ứng viên, tiết kiệm hàng giờ xử lý hành chính.</p>
+      </div>
+      <div class="persona-card">
+        <div class="icon-badge"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1.5"/><path d="M2 18h20"/></svg></div>
+        <h3>Freelancer / Chủ shop</h3>
+        <p>Một mình làm việc của cả phòng marketing — từ research, thiết kế, báo cáo đến chăm sóc khách hàng tự động 24/7.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CURRICULUM ===== -->
+<section class="curriculum on-ink" id="lo-trinh">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Lộ trình 8 buổi</div>
+      <h2>Mỗi buổi là một bước, không buổi nào học cho có</h2>
+    </div>
+    <div class="track">
+
+      <div class="node">
+        <div class="node-num">01</div>
+        <div class="node-body">
+          <h3>Làm chủ AI trong 90 phút</h3>
+          <p class="node-topics">Generative AI &amp; Agentic AI · Token và chi phí vận hành · Công thức prompt R-C-T-F · Kỹ thuật Iterative Refining</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Bộ công thức viết prompt áp dụng đúng cho công việc của bạn — từ email đến JD tuyển dụng.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">02</div>
+        <div class="node-body">
+          <h3>Nghiên cứu thị trường &amp; đối thủ nhanh gấp 10 lần</h3>
+          <p class="node-topics">Tổng hợp tài liệu với NotebookLM · Quét review &amp; phân tích cảm xúc trên Google Maps · Phân tích campaign đối thủ với Claude</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Khả năng tóm tắt hàng chục trang tài liệu trong vài phút và lấy insight thật từ đối thủ, khách hàng.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">03</div>
+        <div class="node-body">
+          <h3>Sáng tạo nội dung: Slide – Hình ảnh – Âm thanh</h3>
+          <p class="node-topics">Tạo slide với Gamma · Hình ảnh / Infographic / 3D bằng câu lệnh · Sáng tác nhạc với Suno · Lồng tiếng video</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Một bộ slide chuyên nghiệp dựng trong 15 phút, không cần thuê designer.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">04</div>
+        <div class="node-body">
+          <h3>Sản xuất video không cần quay dựng</h3>
+          <p class="node-topics">So sánh các mô hình tạo video · Xây kịch bản với Claude · Kỹ thuật viết prompt video mượt hơn</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Một video giới thiệu sản phẩm / dịch vụ tự viết kịch bản và tạo chỉ bằng văn bản.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">05</div>
+        <div class="node-body">
+          <h3>Tự làm báo cáo &amp; xây App mini không cần code</h3>
+          <p class="node-topics">Báo cáo có phân tích / biểu đồ bằng AI · Xây 1 mini app phục vụ công việc thật · Public miễn phí với GitHub Pages</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Một báo cáo trực quan và một ứng dụng mini dùng được ngay, không tốn tiền hosting.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">06</div>
+        <div class="node-body">
+          <h3>Tư duy Automation: để AI làm việc 24/7</h3>
+          <p class="node-topics">Tư duy "AI sáng tạo + Make thực thi" · Module, scenario, webhook, router trong Make.com</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Hiểu cách biến một việc lặp lại hằng ngày thành workflow tự chạy, và dựng được webhook đầu tiên.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">07</div>
+        <div class="node-body">
+          <h3>Kết nối API thực chiến</h3>
+          <p class="node-topics">API là gì · Kết nối Claude AI, App Script, Google Sheet, Gmail · Config 1 workflow có sẵn</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Dữ liệu tự động chảy giữa các nền tảng — không cần copy-paste tay nữa.</p></div>
+        </div>
+      </div>
+
+      <div class="node">
+        <div class="node-num">08</div>
+        <div class="node-body">
+          <h3>Triển khai 2 Workflow thực chiến</h3>
+          <p class="node-topics">Workflow theo dõi đối thủ tự động hàng tuần · Workflow chăm sóc khách hàng tự động, cá nhân hóa theo phân khúc</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>2 hệ thống automation hoàn chỉnh, copy về dùng ngay tại công ty hoặc công việc kinh doanh riêng.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSTRUCTOR ===== -->
+<section class="on-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Người đồng hành</div>
+      <h2>Học cùng người đã tự xây và vận hành hệ thống này</h2>
+    </div>
+    <div class="instructor-card">
+      <!-- SỬA: thay bằng ảnh thật, ví dụ <img src="..." style="width:140px;height:140px;border-radius:50%;object-fit:cover;"> -->
+      <div class="avatar">P</div>
+      <div>
+        <div class="instructor-name"><!-- SỬA: tên giảng viên -->[Tên giảng viên]</div>
+        <div class="instructor-role">Digital Marketing Supervisor · 8+ năm kinh nghiệm</div>
+        <p class="instructor-bio">Đã trực tiếp xây dựng và vận hành các hệ thống nội dung và tự động hóa cho doanh nghiệp thật — từ sản xuất content, nghiên cứu đối thủ, đến các workflow Make.com chạy thật mỗi tuần. Khóa học này là toàn bộ những gì đã dùng để ra kết quả, không phải lý thuyết đọc thêm trên mạng.</p>
+        <div class="credo-row">
+          <span class="credo">MBA</span>
+          <span class="credo">8+ năm Digital Marketing</span>
+          <span class="credo">Tự vận hành Automation thật</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="pricing on-ink">
+  <div class="wrap">
+    <div class="section-head" style="margin:0 auto 40px;text-align:center;">
+      <div class="eyebrow" style="text-align:center;">Đầu tư</div>
+      <h2>Chọn gói phù hợp với bạn</h2>
+    </div>
+    <div class="earlybird"><!-- SỬA: số lượng / ngày hết hạn thật -->Early Bird: chỉ còn 15 suất giảm thêm 200.000đ cho Gói Trọn Bộ</div>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-name">GÓI NỀN TẢNG</div>
+        <div class="price-amount">1.890.000<span>đ</span></div>
+        <div class="price-strike">2.250.000đ</div>
+        <ul class="price-list">
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>5 buổi đầu (Buổi 1 → 5)</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>AI cơ bản, sáng tạo nội dung, báo cáo &amp; mini app</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>Phù hợp nếu chưa cần automation kỹ thuật</li>
+        </ul>
+        <a href="#dang-ky" class="btn btn-ghost-onink">Chọn gói này</a>
+      </div>
+      <div class="price-card featured">
+        <span class="badge">Lựa chọn nhiều nhất</span>
+        <div class="price-name">GÓI TRỌN BỘ — AI + AUTOMATION</div>
+        <div class="price-amount">2.790.000<span>đ</span></div>
+        <div class="price-strike">3.600.000đ</div>
+        <ul class="price-list">
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>Toàn bộ 8 buổi</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>Bao gồm 3 buổi Automation với Make.com</li>
+          <li><svg viewBox="0 0 24 24"><path d="M4 12l5 5 11-11"/></svg>Giá/buổi thấp nhất trong các gói</li>
+        </ul>
+        <a href="#dang-ky" class="btn btn-primary">Chọn gói này <span class="arrow">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="on-paper">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Câu hỏi thường gặp</div>
+      <h2>Trước khi đăng ký</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Tôi chưa biết gì về AI, có học được không? <span class="plus">+</span></summary>
+        <p>Có. Khóa học được thiết kế cho người mới hoàn toàn — không cần biết lập trình, không cần nền tảng kỹ thuật trước đó.</p>
+      </details>
+      <details>
+        <summary>Học online hay offline? <span class="plus">+</span></summary>
+        <!-- SỬA: điền hình thức học thật -->
+        <p>[Điền: offline tại … / online qua Zoom / kết hợp cả hai]</p>
+      </details>
+      <details>
+        <summary>Nếu bận không học hết 8 buổi thì sao? <span class="plus">+</span></summary>
+        <!-- SỬA: điền chính sách học bù / xem lại thật -->
+        <p>[Điền: chính sách học bù hoặc xem lại buổi học]</p>
+      </details>
+      <details>
+        <summary>Có cần mang laptop riêng không? <span class="plus">+</span></summary>
+        <p>Có, bạn cần laptop cá nhân để thực hành trực tiếp tại lớp trong từng buổi học.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FINAL CTA + FORM ===== -->
+<section class="final-cta" id="dang-ky">
+  <div class="wrap">
+    <h2>Còn 15 suất Early Bird cho Gói Trọn Bộ</h2>
+    <p>Lớp giới hạn số lượng để đảm bảo ai cũng được thực hành trực tiếp cùng giảng viên.</p>
+
+    <form class="form-card" onsubmit="event.preventDefault(); alert('Đây là bản mẫu demo. Hãy thay form này bằng plugin Contact Form 7 / WPForms / Fluent Forms trên WordPress để nhận đăng ký thật.');">
+      <div class="form-row">
+        <label for="ho-ten">Họ và tên</label>
+        <input type="text" id="ho-ten" name="ho-ten" required>
+      </div>
+      <div class="form-row">
+        <label for="sdt">Số điện thoại</label>
+        <input type="tel" id="sdt" name="sdt" required>
+      </div>
+      <div class="form-row">
+        <label for="goi">Gói quan tâm</label>
+        <select id="goi" name="goi">
+          <option>Gói Trọn Bộ — AI + Automation (2.790.000đ)</option>
+          <option>Gói Nền Tảng (1.890.000đ)</option>
+          <option>Chưa chắc, cần tư vấn thêm</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;">Đăng ký giữ chỗ <span class="arrow">→</span></button>
+      <p class="form-note">* Form mẫu — cần kết nối plugin form thật trên WordPress trước khi đăng lên.</p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><!-- SỬA: tên thật / năm --> © 2026 AI Workflow. All rights reserved.</div>
+    <div><!-- SỬA: thông tin liên hệ thật -->Liên hệ: [SĐT/Zalo] · [Email]</div>
+  </div>
+</footer>
+
+<script>
+  // Hiện từng node lộ trình khi cuộn tới (tắt nếu prefers-reduced-motion)
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
+    const nodes = document.querySelectorAll('.node');
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold: 0.18 });
+    nodes.forEach(n => io.observe(n));
+  } else {
+    document.querySelectorAll('.node').forEach(n => n.classList.add('is-visible'));
+  }
+</script>
+
+</body>
+</html>
