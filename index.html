@@ -69,6 +69,13 @@
   .hero .wrap{position:relative;z-index:2;}
   .hero-inner{max-width:760px;}
   .pill-row{display:flex;flex-wrap:wrap;gap:10px;margin:26px 0 36px;}
+  .schedule-row{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:8px;}
+  .schedule-item{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,.04);border:1px solid var(--line-on-ink);border-radius:10px;padding:12px 18px;}
+  .schedule-icon{flex:none;width:34px;height:34px;border-radius:8px;background:rgba(63,208,201,.14);color:var(--teal);display:flex;align-items:center;justify-content:center;}
+  .schedule-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;}
+  .schedule-label{font-size:.74rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--text-on-ink-soft);margin:0;}
+  .schedule-value{font-size:.98rem;font-weight:700;color:#fff;margin:2px 0 0;}
+  @media (max-width:480px){ .schedule-item{flex:1 1 100%;} }
   .pill{font-size:.82rem;font-weight:600;padding:7px 14px;border-radius:999px;border:1px solid var(--line-on-ink);color:var(--text-on-ink-soft);}
   .hero h1{font-size:clamp(2.3rem,6vw,4rem);font-weight:900;line-height:1.04;color:#fff;}
   .hero h1 em{font-style:normal;color:var(--teal);}
@@ -214,13 +221,29 @@ Các chỗ vẫn cần kiểm tra lại trước khi đăng:
   <div class="wrap">
     <div class="hero-inner">
       <div class="eyebrow">Khóa học thực chiến · 8 buổi · 90 phút/buổi</div>
-      <h1>Để AI <em>làm việc</em> thay</h1>
+      <h1>Để AI <em>làm việc</em> thay bạn</h1>
       <p class="hero-sub">Bạn dành thời gian đó cho những việc quan trọng hơn.</p>
       <p class="hero-desc">Từ con số 0 đến tự tay dựng được hệ thống tự động hóa chạy thật, ứng dụng hoặc trang web mà không cần biết đến code. Tạo video và hình ảnh chuyên nghiệp mà không ngại thiếu kỹ năng quay, chụp ảnh.</p>
       <div class="pill-row">
         <span class="pill">Sales</span>
         <span class="pill">Marketing</span>
         <span class="pill">Freelancer / Tự kinh doanh</span>
+      </div>
+      <div class="schedule-row">
+        <div class="schedule-item">
+          <span class="schedule-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div>
+            <p class="schedule-label">Thời gian biểu</p>
+            <p class="schedule-value">Thứ 3 và Thứ 5, 20h00 – 21h30</p>
+          </div>
+        </div>
+        <div class="schedule-item">
+          <span class="schedule-icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18"/><path d="M8 3v4M16 3v4"/></svg></span>
+          <div>
+            <p class="schedule-label">Ngày bắt đầu</p>
+            <p class="schedule-value">14/7</p>
+          </div>
+        </div>
       </div>
       <div class="hero-cta-row">
         <a href="#dang-ky" class="btn btn-primary">Tham gia khóa học <span class="arrow">→</span></a>
@@ -357,8 +380,8 @@ Các chỗ vẫn cần kiểm tra lại trước khi đăng:
         <div class="node-num">05</div>
         <div class="node-body">
           <h3>Tự làm báo cáo &amp; xây App mini không cần code</h3>
-          <p class="node-topics">Báo cáo có phân tích / biểu đồ bằng AI · Xây 1 website phục vụ một công việc cụ thể · Public miễn phí và sử dụng.</p>
-          <div class="node-outcome"><span class="tag">Cầm về</span><p>Xây dựng báo cáo và đề xuất hướng triển khai dùng được ngay, giải quyết công việc hiệu quả.</p></div>
+          <p class="node-topics">Báo cáo có phân tích / biểu đồ bằng AI · Xây 1 mini app phục vụ công việc thật · Public miễn phí với GitHub Pages</p>
+          <div class="node-outcome"><span class="tag">Cầm về</span><p>Một báo cáo trực quan và một ứng dụng mini dùng được ngay, không tốn tiền hosting.</p></div>
         </div>
       </div>
 
